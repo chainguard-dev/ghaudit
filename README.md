@@ -1,2 +1,4 @@
 # ghaudit
-A simple CLI tool for checking GitHub organization and repository administration policies.
+
+This repository contains an experimental CLI tool that checks for a variety of
+github org and repository settings.
