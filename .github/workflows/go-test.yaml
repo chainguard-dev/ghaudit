@@ -1,0 +1,39 @@
+# Copyright 2024 Chainguard, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+name: go-build-test
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+  push:
+    branches:
+      - 'main'
+
+jobs:
+
+  go-build-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+      with:
+        egress-policy: audit
+
+    - name: Check out code onto GOPATH
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+    - name: Set up Go
+      uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
+      with:
+        go-version-file: './go.mod'
+        check-latest: true
+
+    - name: build
+      run: |
+        go build -o octo-sts ./cmd/app
+
+    - name: test
+      run: |
+        # Exclude running unit tests against third_party repos.
+        go test -v -race ./...
