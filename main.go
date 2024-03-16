@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/chainguard-dev/ghaudit/pkg/gherror"
 	"github.com/chainguard-dev/ghaudit/pkg/org"
 	"github.com/chainguard-dev/ghaudit/pkg/repo"
 	"github.com/google/go-github/v60/github"
@@ -55,5 +56,10 @@ func main() {
 
 	if err := cmd.ExecuteContext(ctx); err != nil {
 		log.Fatal(err)
+	}
+
+	// Exit with a non-zero status code if there were any errors.
+	if gherror.HadErrors() {
+		os.Exit(1)
 	}
 }
