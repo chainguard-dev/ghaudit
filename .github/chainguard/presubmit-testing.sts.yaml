@@ -4,8 +4,10 @@
 issuer: https://token.actions.githubusercontent.com
 subject: repo:chainguard-dev/ghaudit:pull_request
 claim_pattern:
-  workflow_ref: chainguard-dev/ghaudit/\.github/workflows/presubmit-testing\.yaml@refs/heads/main
+  workflow_ref: chainguard-dev/ghaudit/\.github/workflows/presubmit-testing\.yaml@.* # TODO(mattmoor): change this back to refs/heads/main (for PRT)
 
+# This is running untrusted code in a public repository as pull_request_target.
+# Seek a security review before changing these permissions.
 permissions:
   metadata: read
   administration: read
