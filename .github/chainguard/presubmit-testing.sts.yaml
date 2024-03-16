@@ -1,0 +1,11 @@
+# Copyright 2024 Chainguard, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+issuer: https://token.actions.githubusercontent.com
+subject: repo:chainguard-dev/ghaudit:pull_request
+claim_pattern:
+  workflow_ref: chainguard-dev/ghaudit/\.github/workflows/presubmit-testing\.yaml@refs/heads/main
+
+permissions:
+  metadata: read
+  administration: read
