@@ -5,12 +5,13 @@ package repo
 
 import (
 	"context"
-	"fmt"
-	"os"
 
+	"github.com/chainguard-dev/ghaudit/pkg/gherror"
 	"github.com/google/go-github/v60/github"
 	"github.com/spf13/cobra"
 )
+
+var errDeployKeys = gherror.New("Found deploy keys")
 
 func deployKeys(ghc *github.Client, org, repo *string) *cobra.Command {
 	return &cobra.Command{
@@ -33,7 +34,7 @@ func DeployKeys(ctx context.Context, ghc *github.Client, org, repo string) error
 	// Check whether there are any deploy keys.
 	// TODO(mattmoor): bump the severity if there are any non-readonly ones?
 	if len(keys) > 0 {
-		fmt.Fprintf(os.Stdout, `::error title="Found deploy keys"::Deploy keys used in %s/%s%s`, org, repo, "\n")
+		errDeployKeys.Emit("Deploy keys used in %s/%s", org, repo)
 	}
 	return nil
 }

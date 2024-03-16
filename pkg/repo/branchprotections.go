@@ -5,12 +5,13 @@ package repo
 
 import (
 	"context"
-	"fmt"
-	"os"
 
+	"github.com/chainguard-dev/ghaudit/pkg/gherror"
 	"github.com/google/go-github/v60/github"
 	"github.com/spf13/cobra"
 )
+
+var errBranchProtection = gherror.New("Default branch protection")
 
 func branchProtections(ghc *github.Client, org, repo *string) *cobra.Command {
 	return &cobra.Command{
@@ -31,7 +32,7 @@ func BranchProtections(ctx context.Context, ghc *github.Client, org, repo string
 	}
 
 	if prot, _, err := ghc.Repositories.GetBranchProtection(ctx, org, repo, r.GetDefaultBranch()); err != nil {
-		fmt.Fprintf(os.Stdout, `::error title="Default branch protection"::%s/%s branch %s returned %v%s`, org, repo, r.GetDefaultBranch(), err, "\n")
+		errBranchProtection.Emit("%s/%s branch %s returned %v", org, repo, r.GetDefaultBranch(), err)
 	} else {
 		// TODO(mattmoor): Check prot.GetRequiredPullRequestReviews().RequiredApprovingReviewCount
 		// TODO(mattmoor): Check(?) prot.GetRequiredPullRequestReviews().RequireCodeOwnerReviews

@@ -5,11 +5,15 @@ package repo
 
 import (
 	"context"
-	"fmt"
-	"os"
 
+	"github.com/chainguard-dev/ghaudit/pkg/gherror"
 	"github.com/google/go-github/v60/github"
 	"github.com/spf13/cobra"
+)
+
+var (
+	errDefaultPermissions  = gherror.New("Elevated default actions permissions")
+	errApprovePullRequests = gherror.New("Actions can approve PRs")
 )
 
 func defaultPermissions(ghc *github.Client, org, repo *string) *cobra.Command {
@@ -32,14 +36,14 @@ func DefaultPermissions(ctx context.Context, ghc *github.Client, org, repo strin
 
 	// Check whether the default workflow permissions are write.
 	if dwp.GetDefaultWorkflowPermissions() == "write" {
-		fmt.Fprintf(os.Stdout, `::error title="Elevated default actions permissions"::Elevated permissions in %s/%s%s`, org, repo, "\n")
+		errDefaultPermissions.Emit("Elevated permissions in %s/%s", org, repo)
 	}
 
 	// Check whether workflows can approve PRs.
 	// TODO(mattmoor): We need to figure out how to disable checks for
 	// repos, since the advisory repos approve PRs from actions.
 	if dwp.GetCanApprovePullRequestReviews() {
-		fmt.Fprintf(os.Stdout, `::error title="Actions can approve PRs"::Action approvers in %s/%s%s`, org, repo, "\n")
+		errApprovePullRequests.Emit("Action approvers in %s/%s", org, repo)
 	}
 	return nil
 }
