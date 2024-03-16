@@ -1,0 +1,62 @@
+# Copyright 2024 Chainguard, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+name: e2e presubmit test
+
+on:
+  pull_request_target:
+    branches: ["main"]
+
+jobs:
+  e2e-presubmit-test:
+    runs-on: ubuntu-latest
+
+    # This is running untrusted code in a public repository as pull_request_target.
+    # Seek a security review before changing any aspect of this workflow.
+    permissions:
+      id-token: write
+
+    steps:
+    - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+
+    - uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
+      with:
+        go-version-file: './go.mod'
+        check-latest: true
+
+    - uses: chainguard-dev/octo-sts-action@6177b4481c00308b3839969c3eca88c96a91775f # v1.0.0
+      id: octo-sts
+      with:
+        scope: ${{ github.repository }}
+        identity: presubmit-testing
+
+    - name: Check default permissions
+      env:
+        GH_TOKEN: ${{ steps.octo-sts.outputs.token }}
+      run: |
+        go run . repo \
+          --organization ${{ github.repository_owner }} \
+          --repository ${{ github.event.repository.name }} \
+          default-permissions
+
+    - name: Check for deploy keys
+      env:
+        GH_TOKEN: ${{ steps.octo-sts.outputs.token }}
+      run: |
+        go run . repo \
+          --organization ${{ github.repository_owner }} \
+          --repository ${{ github.event.repository.name }} \
+          deploy-keys
+
+    - name: Check branch protections
+      env:
+        GH_TOKEN: ${{ steps.octo-sts.outputs.token }}
+      run: |
+        go run . repo \
+          --organization ${{ github.repository_owner }} \
+          --repository ${{ github.event.repository.name }} \
+          branch-protections
