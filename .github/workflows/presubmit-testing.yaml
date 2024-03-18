@@ -36,7 +36,7 @@ jobs:
 
     - name: Check default permissions
       env:
-        GH_TOKEN: ${{ steps.octo-sts.outputs.token }}
+        GITHUB_TOKEN: ${{ steps.octo-sts.outputs.token }}
       run: |
         go run . repo \
           --organization ${{ github.repository_owner }} \
