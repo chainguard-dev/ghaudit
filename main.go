@@ -39,9 +39,12 @@ func New(ghc *github.Client) *cobra.Command {
 func main() {
 	ctx := context.Background()
 
-	tok, ok := os.LookupEnv("GH_TOKEN")
+	tok, ok := os.LookupEnv("GITHUB_TOKEN")
 	if !ok {
-		log.Fatal("GH_TOKEN must be set")
+		tok, ok = os.LookupEnv("GH_TOKEN")
+		if !ok {
+			log.Fatal("GITHUB_TOKEN or GH_TOKEN must be set")
+		}
 	}
 
 	ghc := github.NewClient(
