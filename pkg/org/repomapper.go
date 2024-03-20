@@ -7,6 +7,7 @@ import (
 	"context"
 
 	"github.com/google/go-github/v60/github"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 type RepoMapper interface {
@@ -15,18 +16,20 @@ type RepoMapper interface {
 
 type RepoFunc func(ctx context.Context, ghc *github.Client, org, repo string) error
 
-func NewRepoMapper(ghc *github.Client, org *string, rf RepoFunc) RepoMapper {
+func NewRepoMapper(name string, ghc *github.Client, org *string, rf RepoFunc) RepoMapper {
 	return &repoMapper{
-		ghc: ghc,
-		org: org,
-		rf:  rf,
+		name: name,
+		ghc:  ghc,
+		org:  org,
+		rf:   rf,
 	}
 }
 
 type repoMapper struct {
-	ghc *github.Client
-	org *string
-	rf  RepoFunc
+	name string
+	ghc  *github.Client
+	org  *string
+	rf   RepoFunc
 }
 
 func (rm *repoMapper) Execute(ctx context.Context) error {
@@ -45,6 +48,11 @@ func (rm *repoMapper) Execute(ctx context.Context) error {
 		for _, r := range repos {
 			// Skip archived repositories.
 			if r.GetArchived() {
+				continue
+			}
+			// Skip repositories with the "no-ghaudit" topic.
+			topics := sets.New[string](r.Topics...)
+			if topics.Has("no-ghaudit") || topics.Has("no-ghaudit:"+rm.name) {
 				continue
 			}
 
