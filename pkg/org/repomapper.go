@@ -52,7 +52,7 @@ func (rm *repoMapper) Execute(ctx context.Context) error {
 			}
 			// Skip repositories with the "no-ghaudit" topic.
 			topics := sets.New[string](r.Topics...)
-			if topics.Has("no-ghaudit") || topics.Has("no-ghaudit:"+rm.name) {
+			if topics.Has("no-ghaudit") || topics.Has("no-ghaudit-"+rm.name) {
 				continue
 			}
 
