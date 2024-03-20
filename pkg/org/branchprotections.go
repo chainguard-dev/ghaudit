@@ -10,7 +10,7 @@ import (
 )
 
 func branchProtections(ghc *github.Client, org *string) *cobra.Command {
-	rm := NewRepoMapper(ghc, org, repo.BranchProtections)
+	rm := NewRepoMapper("branch-protections", ghc, org, repo.BranchProtections)
 
 	return &cobra.Command{
 		Use:           "branch-protections",

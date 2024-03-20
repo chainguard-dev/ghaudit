@@ -10,7 +10,7 @@ import (
 )
 
 func deployKeys(ghc *github.Client, org *string) *cobra.Command {
-	rm := NewRepoMapper(ghc, org, repo.DeployKeys)
+	rm := NewRepoMapper("deploy-keys", ghc, org, repo.DeployKeys)
 
 	return &cobra.Command{
 		Use:           "deploy-keys",
