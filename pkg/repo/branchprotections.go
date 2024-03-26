@@ -11,7 +11,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var errBranchProtection = gherror.New("Default branch protection")
+var (
+	errBranchProtection = gherror.New("Default branch protection")
+	errRequiredReviews  = gherror.New("Required reviews")
+	errAdminBypass      = gherror.New("Admin bypass")
+	errRequiredChecks   = gherror.New("Required status checks")
+)
 
 func branchProtections(ghc *github.Client, org, repo *string) *cobra.Command {
 	return &cobra.Command{
@@ -34,18 +39,39 @@ func BranchProtections(ctx context.Context, ghc *github.Client, org, repo string
 	if prot, _, err := ghc.Repositories.GetBranchProtection(ctx, org, repo, r.GetDefaultBranch()); err != nil {
 		errBranchProtection.Emit("%s/%s branch %s returned %v", org, repo, r.GetDefaultBranch(), err)
 	} else {
-		// TODO(mattmoor): Check prot.GetRequiredPullRequestReviews().RequiredApprovingReviewCount
-		// TODO(mattmoor): Check(?) prot.GetRequiredPullRequestReviews().RequireCodeOwnerReviews
-		// TODO(mattmoor): Check prot.GetRequiredPullRequestReviews().GetBypassPullRequestAllowances()
-		// TODO(mattmoor): Check prot.GetEnforceAdmins() and prot.GetEnforceAdmins().Enabled
-		// TODO(mattmoor): Check that one of these is non-empty:
-		//  - prot.GetRequiredStatusChecks().Contexts
-		//  - prot.GetRequiredStatusChecks().Checks
+		if rev := prot.GetRequiredPullRequestReviews(); rev == nil {
+			errRequiredReviews.Emit("%s/%s branch %s returned does not require pull request reviews", org, repo, r.GetDefaultBranch())
+		} else {
+			if rev.RequiredApprovingReviewCount == 0 {
+				errRequiredReviews.Emit("%s/%s branch %s does not require pull request approval", org, repo, r.GetDefaultBranch())
+			}
+			if bypasses := rev.GetBypassPullRequestAllowances(); bypasses != nil {
+				errRequiredReviews.Emit("%s/%s branch %s allows bypassing pull request reviews", org, repo, r.GetDefaultBranch())
+			}
+			if !rev.DismissStaleReviews {
+				errRequiredReviews.Emit("%s/%s branch %s does not dismiss stale reviews when new commits are pushed", org, repo, r.GetDefaultBranch())
+			}
+			if !rev.RequireCodeOwnerReviews {
+				errRequiredReviews.Emit("%s/%s branch %s does not require reviews from Code Owners", org, repo, r.GetDefaultBranch())
+			}
+			// TODO(mattmoor): How to check whether approval of the most recent reviewable push is enabled?
+		}
+
+		if admin := prot.GetEnforceAdmins(); admin == nil || !admin.Enabled {
+			errAdminBypass.Emit("%s/%s branch %s allows admins to bypass branch protections", org, repo, r.GetDefaultBranch())
+		}
+
+		if checks := prot.GetRequiredStatusChecks(); checks == nil {
+			errRequiredChecks.Emit("%s/%s branch %s does not require status checks", org, repo, r.GetDefaultBranch())
+		} else if checks.Contexts != nil && len(*checks.Contexts) == 0 {
+			// Either contexts of checks must be specified.
+			errRequiredChecks.Emit("%s/%s branch %s does not have any required contexts", org, repo, r.GetDefaultBranch())
+		} else if checks.Checks != nil && len(*checks.Checks) == 0 {
+			// Either contexts of checks must be specified.
+			errRequiredChecks.Emit("%s/%s branch %s does not have any required checks", org, repo, r.GetDefaultBranch())
+		}
+
 		// TODO(mattmoor): Check prot.GetBlockCreations().Enabled (if the branch protection has a wildcard in it)
-
-		// TODO(mattmoor): Look for others?
-
-		_ = prot // Check the contents of the default branch protection.
 	}
 	return nil
 }
