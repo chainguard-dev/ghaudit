@@ -6,7 +6,7 @@ require (
 	github.com/google/go-github/v60 v60.0.0
 	github.com/spf13/cobra v1.8.0
 	golang.org/x/oauth2 v0.18.0
-	k8s.io/apimachinery v0.29.3
+	k8s.io/apimachinery v0.29.4
 )
 
 require (
