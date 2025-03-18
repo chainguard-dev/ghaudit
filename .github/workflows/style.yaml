@@ -30,7 +30,7 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/gofmt@main
+      - uses: chainguard-dev/actions/gofmt@57740294148be15fdcd6f2cab5f83595c7b502c1 # main
         with:
           args: -s
 
@@ -51,7 +51,7 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/goimports@main
+      - uses: chainguard-dev/actions/goimports@57740294148be15fdcd6f2cab5f83595c7b502c1 # main
 
   golangci-lint:
     name: golangci-lint
@@ -95,13 +95,13 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/trailing-space@main
+      - uses: chainguard-dev/actions/trailing-space@57740294148be15fdcd6f2cab5f83595c7b502c1 # main
         if: ${{ always() }}
 
-      - uses: chainguard-dev/actions/eof-newline@main
+      - uses: chainguard-dev/actions/eof-newline@57740294148be15fdcd6f2cab5f83595c7b502c1 # main
         if: ${{ always() }}
 
-      - uses: reviewdog/action-tflint@master
+      - uses: reviewdog/action-tflint@92ecd5bdf3d31ada4ac26a702666986f67385fda # master
         if: ${{ always() }}
         with:
           github_token: ${{ secrets.github_token }}
