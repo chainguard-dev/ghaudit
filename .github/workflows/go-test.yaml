@@ -11,9 +11,13 @@ on:
     branches:
       - 'main'
 
+permissions: {}
+
 jobs:
 
   go-build-test:
+    permissions:
+      contents: read  # for actions/checkout to fetch code
     runs-on: ubuntu-latest
     steps:
     - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
