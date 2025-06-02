@@ -11,11 +11,17 @@ on:
     branches:
       - 'main'
 
+permissions: {}
+
 jobs:
 
   gofmt:
     name: check gofmt
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
     steps:
       - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
@@ -23,6 +29,8 @@ jobs:
 
       - name: Check out code
         uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        with:
+          persist-credentials: false
 
       - name: Set up Go
         uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
@@ -30,13 +38,17 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/gofmt@5363dd9eb48083bbf7674a4bbe62d71c3b230edd # main
+      - uses: chainguard-dev/actions/gofmt@5363dd9eb48083bbf7674a4bbe62d71c3b230edd # v1.1.2
         with:
           args: -s
 
   goimports:
     name: check goimports
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
     steps:
       - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
@@ -44,6 +56,8 @@ jobs:
 
       - name: Check out code
         uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        with:
+          persist-credentials: false
 
       - name: Set up Go
         uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
@@ -51,11 +65,15 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/goimports@5363dd9eb48083bbf7674a4bbe62d71c3b230edd # main
+      - uses: chainguard-dev/actions/goimports@5363dd9eb48083bbf7674a4bbe62d71c3b230edd # v1.1.2
 
   golangci-lint:
     name: golangci-lint
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: read
 
     steps:
       - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
@@ -63,6 +81,8 @@ jobs:
           egress-policy: audit
 
       - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        with:
+          persist-credentials: false
 
       - name: Set up Go
         uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
@@ -81,6 +101,9 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
       - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
@@ -88,6 +111,8 @@ jobs:
 
       - name: Check out code
         uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        with:
+          persist-credentials: false
 
       - name: Set up Go
         uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
@@ -95,17 +120,17 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/trailing-space@5363dd9eb48083bbf7674a4bbe62d71c3b230edd # main
+      - uses: chainguard-dev/actions/trailing-space@5363dd9eb48083bbf7674a4bbe62d71c3b230edd # v1.1.2
         if: ${{ always() }}
 
-      - uses: chainguard-dev/actions/eof-newline@5363dd9eb48083bbf7674a4bbe62d71c3b230edd # main
+      - uses: chainguard-dev/actions/eof-newline@5363dd9eb48083bbf7674a4bbe62d71c3b230edd # v1.1.2
         if: ${{ always() }}
 
-      - uses: reviewdog/action-tflint@92ecd5bdf3d31ada4ac26a702666986f67385fda # master
+      - uses: reviewdog/action-tflint@41b4770c9d9e50741c20e431986b33124a07ca52 # v1.24.2
         if: ${{ always() }}
         with:
           github_token: ${{ secrets.github_token }}
-          fail_on_error: true
+          fail_level: warning
 
       - uses: reviewdog/action-misspell@32cdac969bc45951d79b89420a60c9b0102cf6ed # v1.16.0
         if: ${{ always() }}

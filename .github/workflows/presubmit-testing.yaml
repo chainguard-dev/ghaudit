@@ -16,6 +16,7 @@ jobs:
     # This is running untrusted code in a public repository as pull_request_target.
     # Seek a security review before changing any aspect of this workflow.
     permissions:
+      contents: read
       id-token: write
 
     steps:
