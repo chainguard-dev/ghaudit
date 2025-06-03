@@ -6,7 +6,7 @@ package org
 import (
 	"context"
 
-	"github.com/google/go-github/v60/github"
+	"github.com/google/go-github/v72/github"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 

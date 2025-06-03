@@ -7,7 +7,7 @@ import (
 	"context"
 
 	"github.com/chainguard-dev/ghaudit/pkg/gherror"
-	"github.com/google/go-github/v60/github"
+	"github.com/google/go-github/v72/github"
 	"github.com/spf13/cobra"
 )
 
