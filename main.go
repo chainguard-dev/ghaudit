@@ -11,7 +11,7 @@ import (
 	"github.com/chainguard-dev/ghaudit/pkg/gherror"
 	"github.com/chainguard-dev/ghaudit/pkg/org"
 	"github.com/chainguard-dev/ghaudit/pkg/repo"
-	"github.com/google/go-github/v60/github"
+	"github.com/google/go-github/v72/github"
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"
 )

@@ -5,7 +5,7 @@ package org
 
 import (
 	"github.com/chainguard-dev/ghaudit/pkg/repo"
-	"github.com/google/go-github/v60/github"
+	"github.com/google/go-github/v72/github"
 	"github.com/spf13/cobra"
 )
 
