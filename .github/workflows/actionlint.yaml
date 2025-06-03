@@ -5,13 +5,19 @@ name: Action Lint
 
 on:
   pull_request:
-    branches: [ 'main', 'release-*' ]
+    branches:
+      - 'main'
+
+permissions: {}
 
 jobs:
 
   action-lint:
     name: Action lint
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     steps:
       - uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
@@ -20,6 +26,8 @@ jobs:
 
       - name: Check out code
         uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+        with:
+          persist-credentials: false
 
       - name: Find yamls
         id: get_yamls
