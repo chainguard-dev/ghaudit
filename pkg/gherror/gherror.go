@@ -26,5 +26,5 @@ type errorImpl struct {
 // Emit implements the Error interface.
 func (e *errorImpl) Emit(msg string, args ...interface{}) {
 	sawError()
-	fmt.Fprintf(os.Stdout, `::error title=%s::%s%s`, e.title, fmt.Sprintf(msg, args...), "\n")
+	_, _ = fmt.Fprintf(os.Stdout, `::error title=%s::%s%s`, e.title, fmt.Sprintf(msg, args...), "\n")
 }
