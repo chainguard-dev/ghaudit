@@ -5,7 +5,7 @@ go 1.24.3
 require (
 	github.com/google/go-github/v72 v72.0.0
 	github.com/spf13/cobra v1.10.1
-	golang.org/x/oauth2 v0.30.0
+	golang.org/x/oauth2 v0.31.0
 	k8s.io/apimachinery v0.34.0
 )
 
