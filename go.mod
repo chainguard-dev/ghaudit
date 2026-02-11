@@ -1,12 +1,12 @@
 module github.com/chainguard-dev/ghaudit
 
-go 1.24.3
+go 1.25.7
 
 require (
 	github.com/google/go-github/v72 v72.0.0
 	github.com/spf13/cobra v1.10.2
 	golang.org/x/oauth2 v0.35.0
-	k8s.io/apimachinery v0.34.3
+	k8s.io/apimachinery v0.35.1
 )
 
 require (
