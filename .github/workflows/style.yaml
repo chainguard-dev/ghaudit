@@ -23,7 +23,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+      - uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
         with:
           egress-policy: audit
 
@@ -38,7 +38,7 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/gofmt@de68b87302e6266db5fb5220246f8aa46fe94b67 # v1.6.14
+      - uses: chainguard-dev/actions/gofmt@c69a264ec2a5934c3186c618f368fc1c86f16cff # v1.6.19
         with:
           args: -s
 
@@ -50,7 +50,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+      - uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
         with:
           egress-policy: audit
 
@@ -65,7 +65,7 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/goimports@de68b87302e6266db5fb5220246f8aa46fe94b67 # v1.6.14
+      - uses: chainguard-dev/actions/goimports@c69a264ec2a5934c3186c618f368fc1c86f16cff # v1.6.19
 
   golangci-lint:
     name: golangci-lint
@@ -76,7 +76,7 @@ jobs:
       pull-requests: read
 
     steps:
-      - uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+      - uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
         with:
           egress-policy: audit
 
@@ -103,7 +103,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+      - uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
         with:
           egress-policy: audit
 
@@ -118,13 +118,13 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/trailing-space@de68b87302e6266db5fb5220246f8aa46fe94b67 # v1.6.14
+      - uses: chainguard-dev/actions/trailing-space@c69a264ec2a5934c3186c618f368fc1c86f16cff # v1.6.19
         if: ${{ always() }}
 
-      - uses: chainguard-dev/actions/eof-newline@de68b87302e6266db5fb5220246f8aa46fe94b67 # v1.6.14
+      - uses: chainguard-dev/actions/eof-newline@c69a264ec2a5934c3186c618f368fc1c86f16cff # v1.6.19
         if: ${{ always() }}
 
-      - uses: step-security/action-tflint@15c8d1fff9c8c2f40157254897d99ef4bb0c5e5d # v1.24.2
+      - uses: step-security/action-tflint@285fe25934512644274b253b424a5d4b8f1c2dc5 # v1.25.0
         if: ${{ always() }}
         with:
           github_token: ${{ secrets.github_token }}
@@ -141,7 +141,7 @@ jobs:
             **/third_party/**
             ./*.yml
 
-      - uses: step-security/woke-action-reviewdog@950b04a91ab83c38de67275fe6190a4eb977f261 # v0.1.1
+      - uses: step-security/woke-action-reviewdog@5db6c18a75242300a37ae6ffe92d03b4da1b5ae8 # v0.1.2
         if: ${{ always() }}
         with:
           github-token: ${{ secrets.github_token }}
