@@ -36,7 +36,7 @@ jobs:
           language: YAML
 
     steps:
-      - uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
 
@@ -45,7 +45,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: chainguard-dev/actions/boilerplate@de68b87302e6266db5fb5220246f8aa46fe94b67 # v1.6.14
+      - uses: chainguard-dev/actions/boilerplate@9978bf17926f53444b5eff45479954d94ec12e32 # v1.6.24
         with:
           extension: ${{ matrix.extension }}
           language: ${{ matrix.language }}
