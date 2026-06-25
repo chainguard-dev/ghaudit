@@ -40,26 +40,29 @@ jobs:
     - name: Check default permissions
       env:
         GITHUB_TOKEN: ${{ steps.octo-sts.outputs.token }}
+        REPO_NAME: ${{ github.event.repository.name }}
       run: |
         go run . repo \
-          --organization ${{ github.repository_owner }} \
-          --repository ${{ github.event.repository.name }} \
+          --organization "${GITHUB_REPOSITORY_OWNER}" \
+          --repository "${REPO_NAME}" \
           default-permissions
 
     - name: Check for deploy keys
       env:
         GH_TOKEN: ${{ steps.octo-sts.outputs.token }}
+        REPO_NAME: ${{ github.event.repository.name }}
       run: |
         go run . repo \
-          --organization ${{ github.repository_owner }} \
-          --repository ${{ github.event.repository.name }} \
+          --organization "${GITHUB_REPOSITORY_OWNER}" \
+          --repository "${REPO_NAME}" \
           deploy-keys
 
     - name: Check branch protections
       env:
         GH_TOKEN: ${{ steps.octo-sts.outputs.token }}
+        REPO_NAME: ${{ github.event.repository.name }}
       run: |
         go run . repo \
-          --organization ${{ github.repository_owner }} \
-          --repository ${{ github.event.repository.name }} \
+          --organization "${GITHUB_REPOSITORY_OWNER}" \
+          --repository "${REPO_NAME}" \
           branch-protections
