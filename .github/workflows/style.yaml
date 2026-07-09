@@ -23,7 +23,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+      - uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
@@ -38,7 +38,7 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/gofmt@e1c4977ad9cb32b12c5b222ec0134a22bec60bd5 # v1.6.25
+      - uses: chainguard-dev/actions/gofmt@f0be69916b439d0fcced2451b23d0f27cd46d545 # v1.6.26
         with:
           args: -s
 
@@ -50,7 +50,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+      - uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
@@ -65,7 +65,7 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/goimports@e1c4977ad9cb32b12c5b222ec0134a22bec60bd5 # v1.6.25
+      - uses: chainguard-dev/actions/goimports@f0be69916b439d0fcced2451b23d0f27cd46d545 # v1.6.26
 
   golangci-lint:
     name: golangci-lint
@@ -76,7 +76,7 @@ jobs:
       pull-requests: read
 
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+      - uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
@@ -91,7 +91,7 @@ jobs:
           check-latest: true
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@82606bf257cbaff209d206a39f5134f0cfbfd2ee # v9.2.1
+        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
         with:
           version: v2.8
 
@@ -103,7 +103,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+      - uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
@@ -118,10 +118,10 @@ jobs:
           go-version-file: './go.mod'
           check-latest: true
 
-      - uses: chainguard-dev/actions/trailing-space@e1c4977ad9cb32b12c5b222ec0134a22bec60bd5 # v1.6.25
+      - uses: chainguard-dev/actions/trailing-space@f0be69916b439d0fcced2451b23d0f27cd46d545 # v1.6.26
         if: ${{ always() }}
 
-      - uses: chainguard-dev/actions/eof-newline@e1c4977ad9cb32b12c5b222ec0134a22bec60bd5 # v1.6.25
+      - uses: chainguard-dev/actions/eof-newline@f0be69916b439d0fcced2451b23d0f27cd46d545 # v1.6.26
         if: ${{ always() }}
 
       - uses: step-security/action-tflint@285fe25934512644274b253b424a5d4b8f1c2dc5 # v1.25.0
