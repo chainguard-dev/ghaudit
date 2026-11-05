@@ -45,7 +45,7 @@ func BranchProtections(ctx context.Context, ghc *github.Client, org, repo string
 			if rev.RequiredApprovingReviewCount == 0 {
 				errRequiredReviews.Emit("%s/%s branch %s does not require pull request approval", org, repo, r.GetDefaultBranch())
 			}
-			if bypasses := rev.GetBypassPullRequestAllowances(); bypasses != nil {
+			if hasBypassAllowances(rev.GetBypassPullRequestAllowances()) {
 				errRequiredReviews.Emit("%s/%s branch %s allows bypassing pull request reviews", org, repo, r.GetDefaultBranch())
 			}
 			if !rev.DismissStaleReviews {
@@ -74,4 +74,15 @@ func BranchProtections(ctx context.Context, ghc *github.Client, org, repo string
 		// TODO(mattmoor): Check prot.GetBlockCreations().Enabled (if the branch protection has a wildcard in it)
 	}
 	return nil
+}
+
+// hasBypassAllowances reports whether any user, team, or app may bypass
+// required pull request reviews. GitHub usually omits the allowances object
+// when nobody can bypass, but it can also come back with empty lists, so a
+// non-nil object alone isn't a finding.
+func hasBypassAllowances(b *github.BypassPullRequestAllowances) bool {
+	if b == nil {
+		return false
+	}
+	return len(b.Users) > 0 || len(b.Teams) > 0 || len(b.Apps) > 0
 }
