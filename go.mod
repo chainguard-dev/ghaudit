@@ -1,6 +1,6 @@
 module github.com/chainguard-dev/ghaudit
 
-go 1.26.10
+go 1.27.3
 
 require (
 	github.com/google/go-github/v72 v72.0.0
