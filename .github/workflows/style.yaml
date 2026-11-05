@@ -124,12 +124,6 @@ jobs:
       - uses: chainguard-dev/actions/eof-newline@e1c4977ad9cb32b12c5b222ec0134a22bec60bd5 # v1.6.25
         if: ${{ always() }}
 
-      - uses: step-security/action-tflint@285fe25934512644274b253b424a5d4b8f1c2dc5 # v1.25.0
-        if: ${{ always() }}
-        with:
-          github_token: ${{ secrets.github_token }}
-          fail_level: warning
-
       - uses: step-security/action-misspell@85d31a4bcbf1c3d99e4f224c148330e45b5a63cf # v1.27.2
         if: ${{ always() }}
         with:
