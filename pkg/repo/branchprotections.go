@@ -77,8 +77,9 @@ func BranchProtections(ctx context.Context, ghc *github.Client, org, repo string
 }
 
 // hasBypassAllowances reports whether any user, team, or app may bypass
-// required pull request reviews. GitHub returns the allowances object with
-// empty lists when nobody can bypass, so a non-nil object alone isn't a finding.
+// required pull request reviews. GitHub usually omits the allowances object
+// when nobody can bypass, but it can also come back with empty lists, so a
+// non-nil object alone isn't a finding.
 func hasBypassAllowances(b *github.BypassPullRequestAllowances) bool {
 	if b == nil {
 		return false
