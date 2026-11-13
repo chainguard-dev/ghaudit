@@ -20,8 +20,16 @@ var (
 
 func branchProtections(ghc *github.Client, org, repo *string) *cobra.Command {
 	return &cobra.Command{
-		Use:           "branch-protections",
-		Short:         "Audit the branch protections.",
+		Use:   "branch-protections",
+		Short: "Audit the branch protections.",
+		Long: `Audit the branch protections.
+
+Reading the protection rules of a repository's default branch requires read
+access to its administration settings. A sample Octo STS permissions block:
+
+  permissions:
+    metadata: read
+    administration: read`,
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {

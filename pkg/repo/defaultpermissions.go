@@ -18,8 +18,17 @@ var (
 
 func defaultPermissions(ghc *github.Client, org, repo *string) *cobra.Command {
 	return &cobra.Command{
-		Use:           "default-permissions",
-		Short:         "Audit the default permissions.",
+		Use:   "default-permissions",
+		Short: "Audit the default permissions.",
+		Long: `Audit the default permissions.
+
+Reading a repository's default GitHub Actions workflow permissions requires
+read access to its administration settings. A sample Octo STS permissions
+block:
+
+  permissions:
+    metadata: read
+    administration: read`,
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
