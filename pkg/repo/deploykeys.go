@@ -15,8 +15,16 @@ var errDeployKeys = gherror.New("Found deploy keys")
 
 func deployKeys(ghc *github.Client, org, repo *string) *cobra.Command {
 	return &cobra.Command{
-		Use:           "deploy-keys",
-		Short:         "Audit for usage of deploy keys.",
+		Use:   "deploy-keys",
+		Short: "Audit for usage of deploy keys.",
+		Long: `Audit for usage of deploy keys.
+
+Listing a repository's deploy keys requires read access to its
+administration settings. A sample Octo STS permissions block:
+
+  permissions:
+    metadata: read
+    administration: read`,
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
