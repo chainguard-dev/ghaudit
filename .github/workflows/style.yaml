@@ -124,7 +124,7 @@ jobs:
       - uses: chainguard-dev/actions/eof-newline@d496b2ab65497cac13d77ccd5038b8aae7e8c43b # v1.8.2
         if: ${{ always() }}
 
-      - uses: chainguard-actions/reviewdog-action-misspell@50843622d8f0e48fec770c4a7a7d1657efc64c08 # v1.31.0
+      - uses: chainguard-actions/reviewdog-action-misspell@f31accef3c70f60bae8cc3eb7b67c6c62cfc22d5 # v1.31.1
         if: ${{ always() }}
         with:
           github_token: ${{ secrets.github_token }}
